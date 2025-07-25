@@ -1,0 +1,124 @@
+{
+  "options": [
+    {
+      "name": "Zephyr",
+      "characteristics": "明亮，高音調"
+    },
+    {
+      "name": "Puck",
+      "characteristics": "活潑，中音調"
+    },
+    {
+      "name": "Charon",
+      "characteristics": "知性，低音調"
+    },
+    {
+      "name": "Kore",
+      "characteristics": "堅定，中音調"
+    },
+    {
+      "name": "Fenrir",
+      "characteristics": "易興奮，中低音調"
+    },
+    {
+      "name": "Leda",
+      "characteristics": "年輕，高音調"
+    },
+    {
+      "name": "Orus",
+      "characteristics": "堅定，中低音調"
+    },
+    {
+      "name": "Aoede",
+      "characteristics": "輕鬆，中音調"
+    },
+    {
+      "name": "Callirrhoe",
+      "characteristics": "隨和，中音調"
+    },
+    {
+      "name": "Autonoe",
+      "characteristics": "明亮，中音調"
+    },
+    {
+      "name": "Enceladus",
+      "characteristics": "氣音，低音調"
+    },
+    {
+      "name": "Iapetus",
+      "characteristics": "清晰，中低音調"
+    },
+    {
+      "name": "Umbriel",
+      "characteristics": "隨和，中低音調"
+    },
+    {
+      "name": "Algieba",
+      "characteristics": "平滑，低音調"
+    },
+    {
+      "name": "Despina",
+      "characteristics": "平滑，中音調"
+    },
+    {
+      "name": "Erinome",
+      "characteristics": "清晰，中音調"
+    },
+    {
+      "name": "Algenib",
+      "characteristics": "沙啞，低音調"
+    },
+    {
+      "name": "Rasalgethi",
+      "characteristics": "知性，中音調"
+    },
+    {
+      "name": "Laomedeia",
+      "characteristics": "活潑，高音調"
+    },
+    {
+      "name": "Achernar",
+      "characteristics": "輕柔，高音調"
+    },
+    {
+      "name": "Alnilam",
+      "characteristics": "堅定，中低音調"
+    },
+    {
+      "name": "Schedar",
+      "characteristics": "平穩，中低音調"
+    },
+    {
+      "name": "Gacrux",
+      "characteristics": "成熟，中音調"
+    },
+    {
+      "name": "Pulcherrima",
+      "characteristics": "直接，中音調"
+    },
+    {
+      "name": "Achird",
+      "characteristics": "友善，中低音調"
+    },
+    {
+      "name": "Zubenelgenubi",
+      "characteristics": "休閒，中低音調"
+    },
+    {
+      "name": "Vindemiatrix",
+      "characteristics": "溫和，中音調"
+    },
+    {
+      "name": "Sadachbia",
+      "characteristics": "活潑，低音調"
+    },
+    {
+      "name": "Sadaltager",
+      "characteristics": "博學，中音調"
+    },
+    {
+      "name": "Sulafat",
+      "characteristics": "溫暖，中音調"
+    }
+  ]
+}

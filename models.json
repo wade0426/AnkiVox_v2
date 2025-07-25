@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Gemini 2.5 Flash Preview Native Audio Dialog",
+        "id": "gemini-2.5-flash-preview-native-audio-dialog"
+    },
+    {
+        "name": "Gemini 2.5 Flash Exp Native Audio Thinking Dialog",
+        "id": "gemini-2.5-flash-exp-native-audio-thinking-dialog"
+    },
+    {
+        "name": "Gemini 2.5 Flash Live Preview",
+        "id": "gemini-2.5-flash-live-preview"
+    },
+    {
+        "name": "Gemini 2.0 Flash 001",
+        "id": "gemini-2.0-flash-live-001"
+    }
+]
