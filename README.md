@@ -1,94 +1,80 @@
 # AnkiVox_v2
-面向語言學習的生成式AI語音合成系統
-這是一個使用 Google Gemini 模型將文字轉換為語音的應用程式。它能夠將剪貼簿中的文字轉換為音訊檔案，並可選擇性地將其轉換為 MP3 或 WAV 格式，特別適合搭配 Anki 記憶卡使用。
 
-功能特點
-使用 Google Gemini 生成高品質的語音音訊
+AnkiVox_v2 是一個利用 Google Gemini API 將文字轉換為語音的工具，特別為 Anki 使用者設計，可以方便地生成語音檔案並自動產生 Anki 音訊標籤。
 
-支援從剪貼簿讀取文字
+## 功能
 
-自動將生成的音訊檔案轉換為 MP3 或 WAV 格式 (使用者可自行選擇)
+*   透過 Google Gemini API 將文字轉換為高品質語音。
+*   支援多種語音和模型選擇。
+*   可選擇儲存為 WAV 或 MP3 格式。
+*   自動將生成的 Anki 音訊標籤 `[sound:檔名]` 複製到剪貼簿。
+*   提供簡單的文字介面來調整設定。
+*   使用非同步處理，在生成音訊時保持應用程式的回應性。
 
-可調整音訊播放速度
+## 安裝
 
-與 Anki 記憶卡系統整合，自動複製 [sound:檔名] 格式到剪貼簿
+1.  **安裝必要的 Python 套件:**
 
-使用者友好的設定介面，可動態選擇模型和語音風格
+    ```bash
+    pip install google-generativeai python-dotenv pyaudio pyperclip
+    ```
 
-自動偵測 FFmpeg 路徑
+2.  **安裝 FFmpeg (選用):**
+    如果您想將音訊儲存為 MP3 格式，您需要在您的系統上安裝 FFmpeg。請參考 [FFmpeg 官網](https://ffmpeg.org/download.html) 的說明進行安裝，並確保 `ffmpeg` 指令在您的系統路徑中。
 
-安裝需求
-Python 3.10 或更高版本
+## 設定
 
-FFmpeg: 如果您想將音訊儲存為 MP3 格式，則必須安裝。
+1.  **建立 `.env` 檔案:**
 
-Windows: 從 ffmpeg.org 下載，並將 bin 資料夾的路徑加入到系統的環境變數 PATH 中，或者在程式的設定介面中手動指定 ffmpeg.exe 的完整路徑。
+    在與 `main_run.py` 相同的資料夾中建立一個名為 `.env` 的檔案，並貼上您的 Google Gemini API 金鑰：
 
-macOS: 使用 Homebrew 安裝: brew install ffmpeg
+    ```
+    GOOGLE_GENAI_API_KEY=YOUR_ACTUAL_API_KEY
+    ```
+    請將 `YOUR_ACTUAL_API_KEY` 替換為您自己的 API 金鑰。
 
-Linux: 使用套件管理器安裝: sudo apt-get install ffmpeg
+2.  **程式設定 (`settings.json`):**
 
-Google Gemini API 金鑰
+    程式的設定儲存在 `settings.json` 檔案中。您可以直接編輯此檔案，或在程式執行時輸入 `s` 進入設定介面進行修改。
 
-專案檔案結構
-/your_project_folder
-|-- main_run.py             # 主執行程式
-|-- config.json             # (自動生成) 儲存使用者設定
-|-- models.json             # 可用的 Gemini 模型列表
-|-- voice_options.json      # 可用的語音風格列表
-|-- .env                    # (需手動建立) 儲存您的 API 金鑰
-|-- requirements.txt        # Python 套件依賴
-|-- AnkiMedia/              # (自動生成) 預設存放音訊檔的資料夾
+    *   `model`: 要使用的 Gemini 模型 (例如 `models/text-to-speech`)。
+    *   `voice`: 要使用的語音 (例如 `zh-TW-Standard-A`)。
+    *   `save_audio`: 是否儲存音訊檔案 (`true` 或 `false`)。
+    *   `audio_format`: 儲存的音訊格式 (`wav` 或 `mp3`)。
+    *   `audio_folder`: 儲存音訊檔案的資料夾。
 
-開始使用
-安裝 Python 套件
-建立一個名為 requirements.txt 的檔案，並填入以下內容：
+## 程式架構說明
 
-google-generativeai
-pyaudio
-pyperclip
-python-dotenv
+### `Settings` 類別
+這個類別負責處理所有設定。當程式第一次啟動時，如果 `settings.json` 不存在，它會使用預設值。任何透過設定介面所做的變更都會被儲存，以便下次啟動時使用。
 
-然後在您的終端機中執行以下指令來安裝所有必要的套件：
+### `AnkiTTS` 類別
 
-pip install -r requirements.txt
+*   `__init__`: 初始化所有必要的元件，包括設定、PyAudio 和 Gemini 客戶端。
 
-設定 API 金鑰
-將 .env.example 檔案重新命名為 .env。用文字編輯器打開 .env 檔案，將 YOUR_API_KEY 替換成您自己的 Google Gemini API 金鑰。
+*   `_setup_client_and_config`: 這是個重要的輔助函式，它會根據 `settings.json` 中的 `model` 和 `voice` 來設定 Gemini API 的連線參數。當您在設定介面中更改這些選項後，它會被重新呼叫以套用變更。
 
-GOOGLE_GENAI_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxx
+*   `_process_text`: 這是非同步的核心函式。它建立一個與 Gemini 的 `live.connect` 會話，然後同時執行三個任務：傳送文字給 API、非同步地接收音訊串流，以及將收到的音訊串流播放出來並儲存。
 
-執行主程式
-在終端機中執行主程式：
+*   `_play_and_save_audio`: 這個函式負責播放音訊。如果設定為儲存檔案，它會將音訊數據收集在 `audio_frames` 列表中。
 
-python main_run.py
+*   `_save_audio_file`: 播放結束後，此函式會被呼叫。它首先將音訊數據寫入一個 `.wav` 檔案。如果使用者選擇了 MP3 格式，它會使用 `subprocess` 模組呼叫系統中的 FFmpeg 程式來進行轉檔，成功後刪除原始的 WAV 檔。最後，它會產生正確的 `[sound:檔名]` 標籤並複製到剪貼簿。
 
-程式第一次執行時，會自動建立 config.json 設定檔和 AnkiMedia 資料夾。
+*   `run_settings_ui`: 提供一個簡單的文字介面，讓使用者可以輕鬆地修改所有可用的設定。
 
-使用方法
-複製您想要轉換為語音的文字到剪貼簿 (例如，從網頁或文件中複製一個單字或句子)。
+*   `main_loop`: 程式的主迴圈，等待使用者的指令。
 
-切換到執行程式的終端機視窗，直接按下 Enter 鍵。
+### 非同步 (asyncio)
+使用 `asyncio` 是為了能同時處理多個 I/O 密集的任務：等待使用者輸入、傳送資料到網路、從網路接收資料，以及播放音訊。這使得應用程式在處理音訊時依然能保持回應。
 
-程式會自動抓取剪貼簿的文字，並開始進行語音合成。
+## 使用方法
 
-合成完成後，程式會自動播放音訊，並將 MP3 或 WAV 檔案儲存到設定的 Anki Media 資料夾中。
-
-程式會自動將 [sound:檔名.mp3] 或 [sound:檔名.wav] 格式的文字複製到剪貼簿。
-
-您可以直接到 Anki 的卡片編輯器中貼上 (Ctrl+V 或 Cmd+V)。
-
-設定說明
-在程式主畫面輸入 s 並按下 Enter 鍵，即可進入設定介面。您可以設定：
-
-FFmpeg 路徑: 如果程式無法自動找到 FFmpeg，您可以在此手動指定 ffmpeg.exe (或 ffmpeg) 的完整路徑。
-
-Anki Media 資料夾路徑: 指定音訊檔案的儲存位置。您可以將其設定為您 Anki 收藏的 collection.media 資料夾，這樣音訊就可以直接在 Anki 中使用。
-
-音訊播放速度: 調整播放速度，方便語言學習。1.0 為正常速度，0.8 為慢速，1.2 為快速。
-
-Gemini 模型: 從 models.json 中選擇不同的文字轉語音模型。
-
-語音風格 (Voice): 從 voice_options.json 中選擇您喜歡的聲音。
-
-儲存音訊格式: 選擇將檔案儲存為 MP3 (檔案較小) 或 WAV (不需轉換，但檔案較大)。
+1.  執行主程式:
+    ```bash
+    python main_run.py
+    ```
+2.  程式啟動後，會顯示目前的設定。
+3.  直接輸入您想轉換為語音的文字，然後按下 Enter。
+4.  程式會即時播放語音，如果設定為儲存，則會將音訊檔儲存到指定資料夾，並將 Anki 標籤複製到剪貼簿。
+5.  輸入 `s` 進入設定介面。
+6.  輸入 `q` 或 `exit` 結束程式。
