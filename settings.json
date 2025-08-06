@@ -1,9 +1,9 @@
 {
     "ffmpeg_path": "D:\\Code\\ffmpeg\\ffmpeg-master-latest-win64-gpl-shared\\bin\\ffmpeg.exe",
-    "anki_media_path": "D:\\Code\\Python\\AnkiVox\\v2\\AnkiMedia",
+    "anki_media_path": "D:\\Code\\Python\\AnkiVox_v2\\AnkiMedia",
     "playback_speed": 1.0,
     "model": "gemini-2.5-flash-preview-native-audio-dialog",
     "voice": "Zephyr",
-    "audio_format": "mp3",
+    "audio_format": "wav",
     "save_audio": true
 }
