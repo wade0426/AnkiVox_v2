@@ -24,6 +24,9 @@ except ImportError:
 # 載入環境變數
 load_dotenv()
 
+# 定義 System Prompt
+SYSTEM_PROMPT = """You are a professional English pronunciation teacher with a standard American English accent. Please read aloud the English content I provide using a clear and natural tone, at a moderate pace that allows learners to understand the correct pronunciation of each word. When reading, please pay special attention to stress patterns, linking techniques, and intonation changes, so I can accurately master the standard pronunciation of this English text. Please begin reading the following English content now:"""
+
 # --- 全域常數 ---
 SETTINGS_FILE = 'settings.json'
 MODELS_FILE = 'models.json'
@@ -122,7 +125,7 @@ class AnkiTTS:
                 )
             ),
             system_instruction=types.Content(
-                parts=[types.Part.from_text(text="You are a helpful voice assistant. Please read the user's text out loud without any extra commentary.")],
+                parts=[types.Part.from_text(text=SYSTEM_PROMPT)],
                 role="user"
             ),
         )
