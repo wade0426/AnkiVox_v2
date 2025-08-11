@@ -253,7 +253,8 @@ class AnkiTTS:
                 play_task = asyncio.create_task(self._play_and_save_audio(text))
                 
                 # 傳送文字並接收音訊
-                await self.session.send(input=text, end_of_turn=True)
+                user_input = f"Speak: ```{text}```"
+                await self.session.send(input=user_input, end_of_turn=True)
                 
                 async for response in self.session.receive():
                     if data := response.data:
